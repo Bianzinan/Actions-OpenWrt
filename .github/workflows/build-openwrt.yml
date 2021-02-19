@@ -44,21 +44,21 @@ jobs:
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
-        sudo mkdir -p /workdir
-        sudo chown $USER:$GROUPS /workdir
+        sudo mkdir -p /openwrt-2102
+        sudo chown $USER:$GROUPS /openwrt-2102
 
     - name: Clone source code
       working-directory: /workdir
       run: |
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH openwrt
-        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        ln -sf /openwrt-2102 $GITHUB_WORKSPACE/openwrt
         
     - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
+      run: cd /openwrt-2102 && ./scripts/feeds update -a
 
     - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
+      run: cd /openwrt-2102 && ./scripts/feeds install -a
       
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
